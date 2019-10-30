@@ -39,6 +39,11 @@ export default function App() {
   //console.log(head);
   //console.log(tail);
 
+  var [head, ...tail] = journalItems;
+  //console.log(head);
+  //console.log(tail);
+  
+
   function _addItem(text) {
     //Datum für heute aufbauen
 
