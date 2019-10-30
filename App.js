@@ -1,6 +1,7 @@
 import React, { useEffect, useState, createRef, useRef } from "react";
 import {
   KeyboardAvoidingView,
+  SectionList,
   FlatList,
   Dimensions,
   StyleSheet,
@@ -9,56 +10,106 @@ import {
   View
 } from "react-native";
 
+const journalItems = [
+  {
+    data: [
+      {
+        text: "Umgang mit SectionList in React Native",
+        date: 1
+      }
+    ],
+
+    title: "29.7.2017"
+  },
+  {
+    data: [{ text: "Einkaufen", date: 2 }, { text: "Games", date: 3 }],
+
+    title: "28.7.2017"
+  }
+];
+
 const { width, height } = Dimensions.get("window");
-
-
-
-
 
 export default function App() {
   const inputEL = React.useRef(null);
   const [newText, setText] = useState("Keine Einträge im Tagebuch");
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(journalItems);
   
-  const journalItems = [
-    {
-      data: [
-        {
-          text: "Umgang mit SectionList in React Native",
-          date: 1
-        }
-      ],
   
-      title: "29.7.2017"
-    },
-    {
-      data: [
-        {text: "Einkaufen",date:2},
-        {text: "Games",date:3}  
-        
-      ],
+
   
-      title: "28.7.2017"
-    }
-  ];
-   
+
+  
+  
+
+  var [head, ...tail] = journalItems;
+  //console.log(head);
+  //console.log(tail);
+  
+
   function _addItem(text) {
-    setItems([...items, { text, date: Date.now().toString() }]);
+    //Datum für heute aufbauen
+
+    const now = new Date();
+    const day = now.getDay();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear();
+
+    //console.log(jitem); //leere Array
+    //setJ(journalItems);
+    //console.log(jitem);
+    
+    const today = `${day}.${month}.${year}`;
+
+    if (head === undefined || head.title !== today) {
+      // ggf. neuen Abschnitt für heutiges Datum erstellen
+      head = { data: [], title: today };
+      tail = items;
+
+      
+      //console.log("head.title: "+head.title);
+      //console.log("items: "+ items);
+      //console.log("tail:"+tail);
+      
+      
+    }
+
+    // neuen Eintrag (newItem) an vorderster Stelle einfügen
+
+    const newItem = { text, date: now.getTime() };
+    head.data = [newItem,...head.data]
+    setItems([head,...tail]);
+    console.log("NewItem:"+head.data+head.tail);
+    console.log(items);
     console.log(items.length);
+    
+    
+    
+  
+    
+   
+    //console.log(jitem.length);
+    //console.log(jitem);
+    
+    //console.log(journalItems.length);
+    //console.log(items);
     inputEL.current.clear();
   }
 
-  if (items.length > 0) {
+  if (journalItems.length > 0) {
     var content = (
-      <FlatList
+      <SectionList
         style={styles.list}
-        data={items}
-        renderItem={({ item }) => <Text>{`${item.text} : ${item.date}`}</Text>}
+        sections={items}
+        renderItem={({ item }) => <Text>{item.text}</Text>}
+        renderSectionHeader={({ section }) => (
+          <Text style={styles.listHeader}>{section.title}</Text>
+        )}
         keyExtractor={item => item.date}
       />
     );
   } else {
-    var content = <Text style={styles.title}>{newText}</Text>;
+    content = <Text style={styles.title}>{newText}</Text>;
   }
 
   return (
@@ -99,5 +150,8 @@ const styles = StyleSheet.create({
   list: {
     marginTop: 24,
     borderColor: "red"
+  },
+  listHeader: {
+    backgroundColor: "darkgray"
   }
 });
