@@ -49,6 +49,14 @@ export default function App() {
   const [items, setItems] = useState(journalItems);
   const TouchableItem = Platform.OS === 'ios' ? TouchableOpacity:TouchableNativeFeedback;
 
+  const RunningSystem = Platform.select({
+    ios: {
+      Name: 'ios',
+    },
+    android: {
+      Name: 'android',
+    }});
+
   var [head, ...tail] = journalItems;
   //console.log(head);
   //console.log(tail);
@@ -100,9 +108,9 @@ export default function App() {
         style={styles.list}
         sections={items}
         renderItem={({ item }) => 
-        <TouchableHighlight underlayColor='red' onPress={()=> console.log("Pressed")}>
+        <TouchableItem underlayColor='red' onPress={()=> console.log(RunningSystem.Name)}>
           <Text >{item.text}</Text>
-          </TouchableHighlight>
+          </TouchableItem>
           }
         renderSectionHeader={({ section }) => (
           <Text style={styles.listHeader}>{section.title}</Text>
