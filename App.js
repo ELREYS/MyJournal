@@ -1,4 +1,4 @@
-import React, { useState,createRef,useRef } from "react";
+import React, { useEffect, useState, createRef, useRef } from "react";
 import {
   KeyboardAvoidingView,
   FlatList,
@@ -8,31 +8,44 @@ import {
   TextInput,
   View
 } from "react-native";
-import { clearLine } from "readline";
 
 const { width, height } = Dimensions.get("window");
 
 
 
+
+
 export default function App() {
+  const inputEL = React.useRef(null);
   const [newText, setText] = useState("Keine Einträge im Tagebuch");
   const [items, setItems] = useState([]);
   
+  const journalItems = [
+    {
+      data: [
+        {
+          text: "Umgang mit SectionList in React Native",
+          date: 1
+        }
+      ],
   
-  let inputEL = useRef(null);
+      title: "29.7.2017"
+    },
+    {
+      data: [
+        {text: "Einkaufen",date:2},
+        {text: "Games",date:3}  
+        
+      ],
   
-  
-
+      title: "28.7.2017"
+    }
+  ];
+   
   function _addItem(text) {
-
     setItems([...items, { text, date: Date.now().toString() }]);
     console.log(items.length);
-    const obj = Object.values(inputEL.current);
-    console.log(obj[5]);
-    
-    
-    
-       
+    inputEL.current.clear();
   }
 
   if (items.length > 0) {
