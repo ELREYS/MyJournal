@@ -1,8 +1,11 @@
 import React, { useEffect, useState, createRef, useRef } from "react";
 import {
+  Platform,
   KeyboardAvoidingView,
   SectionList,
-  FlatList,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  TouchableHighlight,
   Dimensions,
   StyleSheet,
   Text,
@@ -25,6 +28,15 @@ const journalItems = [
     data: [{ text: "Einkaufen", date: 2 }, { text: "Games", date: 3 }],
 
     title: "28.7.2017"
+  },
+  {
+    data: [{ text: "Einkaufen", date: 4 }, { text: "Games", date: 5 }],
+
+    title: "27.7.2017"
+  },{
+    data: [{ text: "Einkaufen", date: 6 }, { text: "Games", date: 7 }],
+
+    title: "26.7.2017"
   }
 ];
 
@@ -32,14 +44,15 @@ const { width, height } = Dimensions.get("window");
 
 export default function App() {
   const inputEL = React.useRef(null);
+  const details = React.useRef(null);
   const [newText, setText] = useState("Keine Einträge im Tagebuch");
   const [items, setItems] = useState(journalItems);
+  const TouchableItem = Platform.OS === 'ios' ? TouchableOpacity:TouchableNativeFeedback;
 
   var [head, ...tail] = journalItems;
   //console.log(head);
   //console.log(tail);
   
-
   function _addItem(text) {
     //Datum für heute aufbauen
 
@@ -86,12 +99,17 @@ export default function App() {
       <SectionList
         style={styles.list}
         sections={items}
-        renderItem={({ item }) => <Text>{item.text}</Text>}
+        renderItem={({ item }) => 
+        <TouchableHighlight underlayColor='red' onPress={()=> console.log("Pressed")}>
+          <Text >{item.text}</Text>
+          </TouchableHighlight>
+          }
         renderSectionHeader={({ section }) => (
           <Text style={styles.listHeader}>{section.title}</Text>
         )}
         keyExtractor={item => item.date}
       />
+      
     );
   } else {
     content = <Text style={styles.title}>{newText}</Text>;
