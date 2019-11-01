@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createRef, useRef } from "react";
+import React, { Component,Props,useEffect, useState, createRef, useRef} from "react";
 import {
   Platform,
   KeyboardAvoidingView,
@@ -10,16 +10,28 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View
+  View,Button
 } from "react-native";
 
 import JournalItems from "./JournalItems";
+import Page2,{Def} from './TextInput';
+
+
+
+export function changeText(){
+  
+  console.log("Clicked"); 
+
+}
+
 
 export default function App() {
   const inputEL = React.useRef(null);
   return (
     <View style={styles.container}>
-      <JournalItems itema={JournalItems}></JournalItems>
+      <Text>{changeText}</Text>
+      <Button title="Button1" onPress={Def}></Button>
+      <Page2 changeTXT={this.changeText}></Page2>
     </View>
   );
 }
