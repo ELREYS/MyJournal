@@ -13,24 +13,13 @@ import {
   View
 } from "react-native";
 
-export default function JournalItems() {
+import JournalItems from "./JournalItems";
+
+export default function App() {
   const inputEL = React.useRef(null);
   return (
     <View style={styles.container}>
-      
-
-      <KeyboardAvoidingView behavior="padding">
-        <TextInput
-          ref={inputEL}
-          autoCorrect={false}
-          returnKeyType="done"
-          style={styles.input}
-          placeholder="Tagebucheintrag erstellen"
-          alignItems="center"
-          onSubmitEditing={event => _addItem(event.nativeEvent.text)}
-          onChangeText={text => setText(text)}
-        />
-      </KeyboardAvoidingView>
+      <JournalItems itema={JournalItems}></JournalItems>
     </View>
   );
 }
